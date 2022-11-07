@@ -5,5 +5,7 @@
     <string name="ab2_inversions">Cari..</string>
     <string name="ab3_inversions">Cari..</string>
     <string name="ab4_inversions">Cari..</string>
+    <string name="title_activity_profil">ProfilActivity</string>
+    <string name="title_activity_water_counter">WaterCounterActivity</string>
 
 </resources>

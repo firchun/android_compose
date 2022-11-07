@@ -1,4 +1,4 @@
-package com.example.testcompose.TataLetak
+package com.example.testcompose.tataletak
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -18,54 +18,36 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.testcompose.Greeting
 import com.example.testcompose.ui.theme.TestComposeTheme
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.testcompose.R
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 
-    class TataLetak : ComponentActivity() {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContent {
-                TestComposeTheme {
-                    Column(){
-                        SearchBar()
-                        Row(){
-                            AlignYourBodyElement(
-                                text = R.string.ab1_inversions,
-                                drawable = R.drawable.univmusamus
-                            )
-                            AlignYourBodyElement(
-                                text = R.string.ab2_inversions,
-                                drawable = R.drawable.univmusamus
-                            )
-                            AlignYourBodyElement(
-                                text = R.string.ab3_inversions,
-                                drawable = R.drawable.univmusamus
-                            )
-                            AlignYourBodyElement(
-                                text = R.string.ab4_inversions,
-                                drawable = R.drawable.univmusamus
-                            )
-                        }
-                        Row() {
-                            FavoriteCollectionCard(
-                                text = R.string.ab1_inversions,
-                                drawable = R.drawable.univmusamus
-                            )
-                            FavoriteCollectionCard(
-                                text = R.string.ab2_inversions,
-                                drawable = R.drawable.univmusamus
-                            )
-                        }
+class TataLetakActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            TestComposeTheme(){
+                Column(){
+                    SearchBar()
+                    AlignYourBodyRow()
+                    Row() {
+                        FavoriteCollectionCard(
+                            text = R.string.ab1_inversions,
+                            drawable = R.drawable.univmusamus
+                        )
+                        FavoriteCollectionCard(
+                            text = R.string.ab2_inversions,
+                            drawable = R.drawable.univmusamus
+                        )
                     }
-
                 }
             }
         }
     }
-
+}
 
 @Preview
 @Composable
@@ -90,12 +72,13 @@ fun SearchBar(modifier: Modifier = Modifier){
             .heightIn(min = 56.dp))
 }
 
+
 @Composable
 fun AlignYourBodyElement(
     @DrawableRes drawable: Int,
     @StringRes text: Int,
     modifier: Modifier = Modifier){
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
             painter = painterResource(drawable),
             contentDescription = null,
@@ -105,11 +88,13 @@ fun AlignYourBodyElement(
                 .clip(CircleShape)
         )
         Text(
-            text = stringResource(text)
+            text = stringResource(text),
+            modifier = Modifier.paddingFromBaseline(
+                top = 24.dp, bottom = 8.dp
+            )
         )
     }
 }
-
 
 @Composable
 fun FavoriteCollectionCard(
@@ -131,6 +116,40 @@ fun FavoriteCollectionCard(
                 text = stringResource(id = text),
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
+        }
+    }
+}
+
+data class Body(
+    val image: Int,
+    val name: Int
+)
+
+fun generateDataBody(): ArrayList<Body>{
+    var data: ArrayList<Body> = ArrayList()
+
+    var body: Body = Body(R.drawable.univmusamus, R.string.ab1_inversions)
+    data.add(body)
+
+    body = Body(R.drawable.univmusamus, R.string.ab2_inversions)
+    data.add(body)
+
+    body = Body(R.drawable.univmusamus, R.string.ab3_inversions)
+    data.add(body)
+
+    body = Body(R.drawable.univmusamus, R.string.ab4_inversions)
+    data.add(body)
+
+    return data
+}
+
+@Composable
+fun AlignYourBodyRow(
+    modifier: Modifier = Modifier
+){
+    LazyRow(modifier = modifier) {
+        items(generateDataBody()) { item ->
+            AlignYourBodyElement( item.image, item.name)
         }
     }
 }
